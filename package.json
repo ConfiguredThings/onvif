@@ -1,6 +1,6 @@
 {
-  "name": "onvif",
-  "version": "0.8.0",
+  "name": "@configuredthings/onvif",
+  "version": "0.8.1",
   "author": "Andrew D.Laptev <a.d.laptev@gmail.com>",
   "description": "Client to ONVIF NVT devices Profile S: cameras",
   "main": "lib/onvif.js",
@@ -36,7 +36,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/agsh/onvif.git"
+    "url": "https://github.com/ConfiguredThings/onvif"
+  },
+  "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "xml2js": "^0.6.2"
