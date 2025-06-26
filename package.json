@@ -1,6 +1,6 @@
 {
   "name": "@configuredthings/onvif",
-  "version": "0.8.0-9",
+  "version": "0.8.0-10",
   "author": "Andrew D.Laptev <a.d.laptev@gmail.com>",
   "description": "Client to ONVIF NVT devices Profile S: cameras",
   "main": "lib/onvif.js",
@@ -32,6 +32,11 @@
       "name": "Roger Hardiman",
       "email": "opensource@rjh.org.uk",
       "url": "http://www.rjh.org.uk"
+    },
+    {
+      "name": "Phil Day",
+      "email": "phil.day@configuredthings.com",
+      "url": "https://github.com/PhilDay-CT"
     }
   ],
   "repository": {
