@@ -1,24 +1,69 @@
-name: Test
+name: Onvif - PR
+
 on:
   pull_request:
-    branches: [ "master" ]
+
+permissions:
+  contents: read
+  packages: read
+
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [16.x,18.x,20.x]
+  changelog-check:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/checkout@v6
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      # can be used to compile TS -> JS prior to testing if needed
-      - run: npm run build --if-present
-      - run: npm test
+          fetch-depth: 0
+
+      - name: Check that Unreleased section was updated by this PR
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          extract_entries() {
+            awk '/^## \[Unreleased\]/{found=1; next} found && /^## /{exit} found{print}' "$1" \
+              | grep -v '^\s*$' | grep -v '^###'
+          }
+
+          git fetch origin "$BASE_REF"
+          merge_base=$(git merge-base "origin/$BASE_REF" HEAD)
+
+          base_changelog=$(mktemp)
+          git show "${merge_base}:CHANGELOG.md" > "$base_changelog"
+          base_entries=$(extract_entries "$base_changelog" || true)
+          rm "$base_changelog"
+          head_entries=$(extract_entries CHANGELOG.md || true)
+
+          if [ "$base_entries" = "$head_entries" ]; then
+            echo "Error: The [Unreleased] section of CHANGELOG.md was not updated in this PR."
+            echo "Please add a description of your changes under '## [Unreleased]' before merging."
+            exit 1
+          fi
+          echo "Unreleased section updated. New entries:"
+          comm -13 <(echo "$base_entries" | sort) <(echo "$head_entries" | sort)
+
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: 'package.json'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@configuredthings'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.BEBOTALULA_PAT_READ_PACKAGES }}
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test

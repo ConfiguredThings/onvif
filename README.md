@@ -1,3 +1,14 @@
+> [!IMPORTANT]
+> This repo is a fork of https://github.com/agsh/onvif/tree/master with changes specific to the Cross Domain CCTV project.
+> A new branch `main` was created from the upstream `master` branch at the point where it was forked.
+> Whilst there are no plans to contribute back the changes this does provide a reference point for any rebase or contributions back to the origin.
+> The CHANGELOG.md (not really maintained in the original) was updated at point to be consistent with [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+>
+> In the context of this project the onvif module is used to to communicate with the cameras for three specific use cases:
+> - To generate the reference data required by the high side Onvif server, which in turn provides the ONVIF presentation to the NVRs
+> - To generate the hash of the current configuration
+> - To make PTZ calls 
+
 # ONVIF
 
 [![Coverage Status](https://img.shields.io/coveralls/agsh/onvif.svg)](https://coveralls.io/r/agsh/onvif?branch=master)
