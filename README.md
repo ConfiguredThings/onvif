@@ -1,8 +1,12 @@
 > [!IMPORTANT]
 > This repo is a fork of https://github.com/agsh/onvif/tree/master with changes specific to the Cross Domain CCTV project.
+>
+> The upstream project has a focus of discovery and workarounds for various camera models whilst we value stability and the
+> ability to quickly adapt to the specific cameras we need to support, hence the fork.
+>    
 > A new branch `main` was created from the upstream `master` branch at the point where it was forked.
 > Whilst there are no plans to contribute back the changes this does provide a reference point for any rebase or contributions back to the origin.
-> The CHANGELOG.md (not really maintained in the original) was updated at point to be consistent with [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+> The CHANGELOG.md (not really maintained in the original) was updated at point we forked to be consistent with [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 >
 > In the context of this project the onvif module is used to to communicate with the cameras for three specific use cases:
 > - To generate the reference data required by the high side Onvif server, which in turn provides the ONVIF presentation to the NVRs
