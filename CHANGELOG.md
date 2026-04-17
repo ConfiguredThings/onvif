@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-11] - 2026-04-17
+- Fix tests
+
 ## [0.8.0-10] - 2025-06-26
 
 ### Changed
-- Remove some odd workarounds in the PTZ commands that don;t work with out cameras
+- Remove some odd workarounds in the PTZ commands that don't work with out cameras
 
 ## [0.8.0-9] - 2025-06-09
 
@@ -20,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0-8] - 2025-06-06
 
 ### Fixed
-- error handling in gatAudio*() functions
+- error handling in getAudio*() functions
 
 ## [0.8.0-7] - 2025-06-02
 
@@ -76,7 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...HEAD
+[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...HEAD
+[0.8.0-11]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...v0.8.0-10
 [0.8.0-10]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...v0.8.0-9
 [0.8.0-9]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-9...v0.8.0-8
 [0.8.0-8]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-8...v0.8.0-7
