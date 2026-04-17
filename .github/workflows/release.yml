@@ -31,9 +31,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.BEBOTALULA_PAT_READ_PACKAGES }}
 
-      - name: Build
-        run: npm run build
-
       - name: Lint
         run: npm run lint
 
