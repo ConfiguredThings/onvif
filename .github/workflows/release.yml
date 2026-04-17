@@ -77,6 +77,8 @@ jobs:
             $PRERELEASE_FLAG
 
       - name: Publish to GitHub Packages
-        run: npm publish
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          npm publish --tag ${VERSION}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
