@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-12] - 2026-06-21
+- Add support for AddEventBroker()
+
 ## [0.8.0-11] - 2026-04-17
 - Fix tests
 
@@ -79,18 +82,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...HEAD
-[0.8.0-11]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...v0.8.0-10
-[0.8.0-10]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...v0.8.0-9
-[0.8.0-9]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-9...v0.8.0-8
-[0.8.0-8]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-8...v0.8.0-7
-[0.8.0-7]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-7...v0.8.0-6
-[0.8.0-6]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-6...v0.8.0-5
-[0.8.0-5]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-5...v0.8.0-4
-[0.8.0-4]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-4...v0.8.0-3
-[0.8.0-3]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-3...v0.8.0-2
-[0.8.0-2]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-2...v0.8.0-1
-[0.8.0-1]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-1...v0.8.0
+[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-12...HEAD
+[0.8.0-12]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...v0.8.0-12
+[0.8.0-11]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...v0.8.0-11
+[0.8.0-10]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-9...v0.8.0-10
+[0.8.0-9]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-8...v0.8.0-9
+[0.8.0-8]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-7...v0.8.0-8
+[0.8.0-7]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-6...v0.8.0-7
+[0.8.0-6]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-5...v0.8.0-6
+[0.8.0-5]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-4...v0.8.0-5
+[0.8.0-4]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-3...v0.8.0-4
+[0.8.0-3]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-2...v0.8.0-3
+[0.8.0-2]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-1...v0.8.0-2
+[0.8.0-1]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0...v0.8.0-1
 
 
 ## [0.8.0] Upstream master
