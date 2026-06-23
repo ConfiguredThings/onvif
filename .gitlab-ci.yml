@@ -1,0 +1,71 @@
+stages:
+  - build
+  - release
+
+build:
+  stage: build
+  image: node:22
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+/'
+  script:
+    # Install dependencies from GitHub Packages
+    - npm ci
+
+    # lint, test
+    - npm run lint
+    - npm test
+
+    # Check changelog entry exists for this version
+    - |
+      VERSION="${CI_COMMIT_TAG#v}"
+      if ! grep -q "## \[${VERSION}\]" CHANGELOG.md; then
+        echo "Error: No changelog entry found for version ${VERSION} in CHANGELOG.md"
+        exit 1
+      fi
+
+    # Check no pre-release changelog entries exist for a stable release
+    - |
+      VERSION="${CI_COMMIT_TAG#v}"
+      if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        if grep -qP "^## \[$VERSION-" CHANGELOG.md; then
+          echo "Error: CHANGELOG.md contains pre-release entries for $VERSION:"
+          grep -P "^## \[$VERSION-" CHANGELOG.md
+          echo ""
+          echo "A stable release changelog entry must not list pre-release variants of the same version."
+          echo "Remove or consolidate the pre-release entries before releasing."
+          exit 1
+        fi
+      fi
+
+    # Extract release notes for this version
+    - |
+      VERSION="${CI_COMMIT_TAG#v}"
+      awk "/^## \[${VERSION}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md > release-notes.md
+      echo "Release notes:"
+      cat release-notes.md
+
+    # Publish to GitHub Packages
+    - echo "@galactic-wolf:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/" > .npmrc
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+    - npm publish
+
+  artifacts:
+    paths:
+      - release-notes.md
+    expire_in: 1 hour
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: build
+      artifacts: true
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+/'
+  script:
+    - echo "Creating GitLab release for ${CI_COMMIT_TAG}"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: $CI_COMMIT_TAG
+    description: "./release-notes.md"
+
