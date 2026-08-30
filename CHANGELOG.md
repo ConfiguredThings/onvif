@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-13] - 2026-08-30
+
+### Fixed
+- Media/OSD operations
+    - Spelling of `videoSourceConfigurationToken`
+    - Don't test for `options.fontColor.X` etc as 0 is a valid value
+
 ## [0.8.0-12] - 2026-06-21
+
+### Added
 - Add support for AddEventBroker()
 
 ## [0.8.0-11] - 2026-04-17
+
+### Fixed
 - Fix tests
 
 ## [0.8.0-10] - 2025-06-26
