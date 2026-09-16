@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-14] - 2026-09-16
+
+### Fixed
+- `getSystemDateAndTime()` now recalculates `timeShift` on every call instead of only
+  the first. Previously, if the device's clock drifted, was NTP-corrected, or the
+  device rebooted after the first calculation, `timeShift` stayed stale for the life
+  of the `Cam` object and every subsequent WS-Security-authenticated request would
+  keep failing (seen as persistent 400 errors) until a new `Cam` was created.
+
 ## [0.8.0-13] - 2026-08-30
 
 ### Fixed
@@ -93,7 +102,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-12...HEAD
+[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-14...HEAD
+[0.8.0-14]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-13...v0.8.0-14
+[0.8.0-13]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-12...v0.8.0-13
 [0.8.0-12]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...v0.8.0-12
 [0.8.0-11]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...v0.8.0-11
 [0.8.0-10]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-9...v0.8.0-10
