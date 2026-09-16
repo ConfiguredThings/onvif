@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0-10] - 2025-06-26
 
 ### Changed
-- Remove some odd workarounds in the PTZ commands that don't work with out cameras
+- Remove some odd workarounds in the PTZ commands that don't work with our cameras
 
 ## [0.8.0-9] - 2025-06-09
 
