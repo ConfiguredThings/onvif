@@ -3,9 +3,14 @@ const onvif = require('../lib/onvif');
 
 describe('Discovery', function() {
 	this.timeout(10000);
-	before(() => {
+	before(function() {
+		// Discovery multicasts a probe on the real network, so any camera on it
+		// replies as well as the mockup server, and the tests fail
+		if (!process.env.TEST_DISCOVERY) {
+			this.skip();
+		}
 		if (process.platform === 'win32') {
-			this.skip('Skipping test on Windows');
+			this.skip();
 		}
 	});
 	it('should discover at least one device (mockup server)', (done) => {

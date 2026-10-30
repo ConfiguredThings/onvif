@@ -21,7 +21,7 @@
                     <tt:PanTilt>IDLE</tt:PanTilt>
                     <tt:Zoom>IDLE</tt:Zoom>
                 </tt:MoveStatus>
-                <tt:UtcTime>2014-12-29T20:01:31Z</tt:UtcTime>
+                {{? typeof it.utcTime === 'undefined' }}<tt:UtcTime>2014-12-29T20:01:31Z</tt:UtcTime>{{?? it.utcTime !== null }}<tt:UtcTime>{{= it.utcTime }}</tt:UtcTime>{{?}}
             </tptz:PTZStatus>
         </tptz:GetStatusResponse>
     </SOAP-ENV:Body>

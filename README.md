@@ -54,6 +54,10 @@ In the library directory run `npm test`
 
 By default the tests use a mockup server to generate ONVIF replies.
 
+The discovery tests are skipped, as they send a probe on the real network and any camera on it
+will reply as well as the mockup server. To run them, on a network with no ONVIF devices, set
+`TEST_DISCOVERY=1`.
+
 To test with the real device, set appropriate environment variables `HOSTNAME`, `USERNAME`, `PASSWORD`, `PORT` and run
 tests.
 

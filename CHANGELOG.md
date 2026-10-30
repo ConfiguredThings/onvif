@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- The discovery tests are skipped unless `TEST_DISCOVERY` is set, as they probe the real
+  network and fail if there are any ONVIF devices on it
+
+### Fixed
+- `getStatus()` always returns `utcTime` as a `Date`, or `undefined` if it can't be read.
+  It should be an `xs:dateTime`, but some cameras send epoch seconds (or ms), which
+  were returned as a number, and a dateTime with an offset was returned as a string
+
 ## [0.8.0-14] - 2026-09-16
 
 ### Fixed

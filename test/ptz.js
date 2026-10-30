@@ -186,10 +186,50 @@ describe('Imaging', () => {
 
 	describe('getStatus', () => {
 		it('should returns position status', (done) => {
-			cam.getStatus({}, (err) => {
+			cam.getStatus({}, (err, status) => {
 				assert.strictEqual(err, null);
+				assert.ok(status.utcTime instanceof Date);
+				assert.strictEqual(status.utcTime.toISOString(), '2014-12-29T20:01:31.000Z');
 				done();
 			});
 		});
+		if (synthTest) {
+			// Some cameras don't send UtcTime as an xs:dateTime
+			const utcTimes = {
+				'epoch seconds': '1793365818',
+				'epoch ms': '1793365818000',
+				'a dateTime with an offset': '2026-10-30T14:10:18+01:00',
+			};
+			Object.entries(utcTimes).forEach(([name, utcTime]) => {
+				it(`should return utcTime as a Date when the camera sends ${name}`, (done) => {
+					serverMockup.conf.utcTime = utcTime;
+					cam.getStatus({}, (err, status) => {
+						delete serverMockup.conf.utcTime;
+						assert.strictEqual(err, null);
+						assert.ok(status.utcTime instanceof Date);
+						assert.strictEqual(status.utcTime.toISOString(), '2026-10-30T13:10:18.000Z');
+						done();
+					});
+				});
+			});
+			it('should return utcTime as undefined when it can\'t be read', (done) => {
+				serverMockup.conf.utcTime = 'not a time';
+				cam.getStatus({}, (err, status) => {
+					delete serverMockup.conf.utcTime;
+					assert.strictEqual(err, null);
+					assert.strictEqual(status.utcTime, undefined);
+					done();
+				});
+			});
+			it('should not add utcTime when the camera doesn\'t send it', (done) => {
+				serverMockup.conf.utcTime = null;
+				cam.getStatus({}, (err, status) => {
+					delete serverMockup.conf.utcTime;
+					assert.strictEqual(err, null);
+					assert.ok(!('utcTime' in status));
+					done();
+				});
+			});
+		}
 	});
 });
