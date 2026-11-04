@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-17] - 2026-11-04
+
 ### Fixed
 - A SOAP Fault is returned as `ONVIF SOAP Fault: <reason>: <detail>` whatever the HTTP status.
   SOAP 1.2 sends faults with HTTP 400 or 500, so they were reported as just
