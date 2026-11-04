@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-16] - 2026-11-04
+
 ### Fixed
 - `setVideoEncoderConfiguration()` sends numeric values of 0 (e.g. `quality`, `bitrateLimit`,
   `govLength`), which were left out of the request. Missing, `null` or empty values are still
