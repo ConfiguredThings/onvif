@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `setVideoEncoderConfiguration()` sends numeric values of 0 (e.g. `quality`, `bitrateLimit`,
+  `govLength`), which were left out of the request. Missing, `null` or empty values are still
+  left out
+- `setVideoEncoderConfiguration()` returns the request error on a network error or timeout,
+  rather than throwing a `TypeError` (which left the promise unsettled), and returns a SOAP
+  fault rather than reporting it as a wrong response
+
 ## [0.8.0-15] - 2026-10-30
 
 ### Changed
