@@ -174,6 +174,29 @@ describe('Media', () => {
 				done();
 			});
 		});
+		it('should send numeric values of 0, and return a request error', (done) => {
+			const request = cam._request;
+			cam._request = (options, callback) => {
+				cam._request = request;
+				const body = options.body;
+				for (const tag of ['Width', 'Height', 'Quality', 'FrameRateLimit', 'EncodingInterval', 'BitrateLimit', 'GovLength']) {
+					assert.ok(body.includes(`>0</${tag}>`), `${tag} missing from ${body}`);
+				}
+				assert.ok(!body.includes('<UseCount'));
+				callback(new Error('stop'));
+			};
+			cam.setVideoEncoderConfiguration({
+				token: 'token',
+				useCount: '',
+				resolution: {width: 0, height: 0},
+				quality: 0,
+				rateControl: {frameRateLimit: 0, encodingInterval: 0, bitrateLimit: 0},
+				H264: {govLength: 0},
+			}, (err) => {
+				assert.strictEqual(err.message, 'stop');
+				done();
+			});
+		});
 		if (synthTest) {
 			it('should emits error with wrong response', (done) => {
 				serverMockup.conf.bad = true;
