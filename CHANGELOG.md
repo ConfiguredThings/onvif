@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-18] - 2026-11-06
+
 ### Fixed
 - HTTP Digest auth: after a 401 the request is retried with the Digest credentials once, and only
   the retry's response is returned. The 401 was also returned to the callback first, so the caller
@@ -136,22 +138,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-15...HEAD
-[0.8.0-15]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-14...v0.8.0-15
-[0.8.0-14]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-13...v0.8.0-14
-[0.8.0-13]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-12...v0.8.0-13
-[0.8.0-12]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-11...v0.8.0-12
-[0.8.0-11]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-10...v0.8.0-11
-[0.8.0-10]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-9...v0.8.0-10
-[0.8.0-9]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-8...v0.8.0-9
-[0.8.0-8]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-7...v0.8.0-8
-[0.8.0-7]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-6...v0.8.0-7
-[0.8.0-6]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-5...v0.8.0-6
-[0.8.0-5]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-4...v0.8.0-5
-[0.8.0-4]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-3...v0.8.0-4
-[0.8.0-3]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-2...v0.8.0-3
-[0.8.0-2]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0-1...v0.8.0-2
-[0.8.0-1]: https://github.com/ConfiguredThings/sfjsComponents/compare/v0.8.0...v0.8.0-1
+[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-18...HEAD
+[0.8.0-18]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-17...v0.8.0-18
+[0.8.0-17]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-16...v0.8.0-17
+[0.8.0-16]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-15...v0.8.0-16
+[0.8.0-15]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-14...v0.8.0-15
+[0.8.0-14]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-13...v0.8.0-14
+[0.8.0-13]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-12...v0.8.0-13
+[0.8.0-12]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-11...v0.8.0-12
+[0.8.0-11]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-10...v0.8.0-11
+[0.8.0-10]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-9...v0.8.0-10
+[0.8.0-9]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-8...v0.8.0-9
+[0.8.0-8]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-7...v0.8.0-8
+[0.8.0-7]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-6...v0.8.0-7
+[0.8.0-6]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-5...v0.8.0-6
+[0.8.0-5]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-4...v0.8.0-5
+[0.8.0-4]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-3...v0.8.0-4
+[0.8.0-3]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-2...v0.8.0-3
+[0.8.0-2]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-1...v0.8.0-2
+[0.8.0-1]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0...v0.8.0-1
 
 
 ## [0.8.0] Upstream master
