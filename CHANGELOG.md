@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- HTTP Digest auth: after a 401 the request is retried with the Digest credentials once, and only
+  the retry's response is returned. The 401 was also returned to the callback first, so the caller
+  saw `HTTP Error 401 Unauthorized` and then the real result, and with the wrong password the
+  request was retried for ever
+
 ## [0.8.0-17] - 2026-11-04
 
 ### Fixed
