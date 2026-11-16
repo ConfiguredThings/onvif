@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tas="http://www.onvif.org/ver10/advancedsecurity/wsdl">
+    <SOAP-ENV:Body>
+        <tas:GetServiceCapabilitiesResponse>
+            <tas:Capabilities>
+                <tas:KeystoreCapabilities MaximumNumberOfKeys="100" MaximumNumberOfCertificates="100" RSAKeyPairGeneration="true" RSAKeyLengths="2048 3072 4096" PKCS10ExternalCertificationWithRSA="true" PKCS12CertificateWithRSAPrivateKeyUpload="true" SelfSignedCertificateCreationWithRSA="true" X509Versions="1 2 3">
+                    <tas:SignatureAlgorithms algorithm="1.2.840.113549.1.1.11"/>
+                </tas:KeystoreCapabilities>
+                <tas:TLSServerCapabilities TLSServerSupported="1.2 1.3" TLSClientAuthSupported="true"/>
+            </tas:Capabilities>
+        </tas:GetServiceCapabilitiesResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

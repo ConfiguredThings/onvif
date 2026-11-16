@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Advanced Security service: `hasAdvancedSecurity()`, `getAdvancedSecurityCapabilities()`,
+  `getAllCertificates()`, `getCertificate()`, `getAllKeys()`, `getAllCertificationPaths()`,
+  `getCertificationPath()` and `getAllCertPathValidationPolicies()`, to find the certificates a
+  device has (including any loaded manually) and their IDs, e.g. for `AddEventBroker`. Certificates
+  include their subject, issuer, validity and fingerprint. The service's address comes from
+  GetServices, which is called if it hasn't been already
+
 ## [0.8.0-18] - 2026-11-06
 
 ### Fixed
