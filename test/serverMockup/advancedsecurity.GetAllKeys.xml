@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tas="http://www.onvif.org/ver10/advancedsecurity/wsdl">
+    <SOAP-ENV:Body>
+        <tas:GetAllKeysResponse>
+            <tas:KeyAttribute>
+                <tas:KeyID>KEY-1</tas:KeyID>
+                <tas:Alias>42</tas:Alias>
+                <tas:hasPrivateKey>true</tas:hasPrivateKey>
+                <tas:KeyStatus>ok</tas:KeyStatus>
+                <tas:externallyGenerated>false</tas:externallyGenerated>
+                <tas:securelyStored>true</tas:securelyStored>
+            </tas:KeyAttribute>
+        </tas:GetAllKeysResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

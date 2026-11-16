@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tas="http://www.onvif.org/ver10/advancedsecurity/wsdl">
+    <SOAP-ENV:Body>
+        <tas:GetCertificateResponse>
+            <tas:Certificate>
+                <tas:CertificateID>1</tas:CertificateID>
+                <tas:KeyID>KEY-1</tas:KeyID>
+                <tas:Alias>mqtt-client</tas:Alias>
+                <tas:CertificateContent>MIIDEzCCAfugAwIBAgIUH0aqGg87I+ySW6HvEH898kMXLfwwDQYJKoZIhvcNAQELBQAwFzEVMBMGA1UEAwwMVGVzdCBNUVRUIENBMB4XDTI2MTExNjExMDgyMVoXDTM2MTExMzExMDgyMVowFTETMBEGA1UEAwwKY2FtMS5sb2NhbDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKmfOIISsut7Nu0Imx1L54MUhfGsDKkKskhI98GF390afSlLB/yKMekRgWBaaUciHnzHadPuD3p6q9rb4D8JPh6oPuo8WE8hXgcjpV7o9yG/Z5JjZwNkwSQTCfviPZijexzduhtXXxxRn5YtcQwgJfhyMaE+ZtEuMLR5+SO1+WYHQKj07MIAwq41GIkj4NbVhqBQVvuLO0mTNPsBNIAChG3EQ9cJzveUDrn7CrssLzpd2a7jjYC7/u/UNlEGeYlBILTpANP7S6fZLiQ4y5khVpb3PzARyvBOvwYQQtMSYx+MugUun+SSvr/V+IVEGtFOErhXnZNpgSoH4JEgJyL7rpcCAwEAAaNZMFcwFQYDVR0RBA4wDIIKY2FtMS5sb2NhbDAdBgNVHQ4EFgQUzJp/KoGoWldaWgkqpQbpXPU/HIcwHwYDVR0jBBgwFoAUuJj0fD974VA4Zwe/UVZ20TE8QpMwDQYJKoZIhvcNAQELBQADggEBAB0icXPDA++b7/+hQIvLfT1eVVo+ynQQ6SZunB3/MiHrM4ypOrtBun/00PV0+Ak/THKm3xotWS9wUkY60+cREQFc54DxIMfNd0QAk+ALRv0vBYmGGY3/fiPlGrIkS9JVO4rSAMD4j3ly0QPGY/jMLuLwEx/0lWpoyu7O0eOc9Alllw9lattSTONaho4EHwrBRR2KNZG/wX0cSSr9Q9V6eyBla/Gk5MhwOPAY7lBWzxUL9l8QzXXSkj63CFiuTNp3d0gyRtlkDEGsAV62wUGLw5/0Awv/GcNses5rb7m3yJQh5/6j6WkYH0O6nksSFD50CqFWjJ+jd9LtlKNfiso+KEU=</tas:CertificateContent>
+            </tas:Certificate>
+        </tas:GetCertificateResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

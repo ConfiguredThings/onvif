@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tas="http://www.onvif.org/ver10/advancedsecurity/wsdl">
+    <SOAP-ENV:Body>
+        <tas:GetAllCertificationPathsResponse>
+            <tas:CertificationPathID>7</tas:CertificationPathID>
+        </tas:GetAllCertificationPathsResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -452,6 +452,50 @@ configuration object
 ### GetRecordingOptions(callback)
 *Recordings.* Get the information of a recording token. Needed in order to match a recordingToken with a sourceToken. Used with both **GetRecordings** and **GetReplayUri** will allow to retreive recordings from an [Onvif Profile G](https://www.onvif.org/profiles/profile-g/) device. Note: not all devices are 100% Onvif G compliant.
 
+### Advanced Security
+
+*Advanced Security.* Read the device's keystore: its keys, its certificates (including any loaded manually, e.g. through the
+camera's web page) and its certification path validation policies. The IDs these return are what the event service's
+`AddEventBroker` takes as `CertificateID` (the client certificate the device presents to an MQTT broker) and
+`CertPathValidationPolicyID` (which CAs it trusts for the broker's certificate).
+
+The service isn't in GetCapabilities, so its address comes from GetServices, which is called first if it hasn't been
+already. If the device doesn't have the service, each call returns the error
+`The device does not support the Advanced Security service`. IDs and aliases are always strings, and lists are always arrays.
+
+#### hasAdvancedSecurity(callback)
+Returns `true` if the device has the Advanced Security service.
+
+#### getAdvancedSecurityCapabilities(callback)
+The service's capabilities, e.g. `keystoreCapabilities.$.RSAKeyPairGeneration` and
+`keystoreCapabilities.$.PKCS10ExternalCertificationWithRSA` say if the device can generate a key and a certificate signing request for it.
+
+#### getAllCertificates(callback)
+An array of every certificate in the keystore, each with `certificateID`, `keyID`, `alias`, `certificateContent`
+(base64 DER), `hasPrivateKey` (if the device reports it) and `x509`, the certificate's details if it could be parsed (Node 15.6 or later):
+`subject`, `issuer`, `subjectAltName`, `serialNumber`, `validFrom`, `validTo`, `fingerprint256` and `ca`. E.g. to find a camera's client certificate:
+```js
+const certs = await cam.getAllCertificates();
+const client = certs.find((c) => c.x509 && c.x509.subject === 'CN=cam1.local');
+```
+
+#### getCertificate(certificateID, callback)
+One certificate, as above.
+
+#### getAllKeys(callback)
+An array of the keys in the keystore: `keyID`, `alias`, `hasPrivateKey`, `keyStatus` (`ok`, `generating` or `corrupt`),
+`externallyGenerated`, `securelyStored`.
+
+#### getAllCertificationPaths(callback)
+An array of the IDs of the certification paths (chains of certificates) in the keystore.
+
+#### getCertificationPath(certificationPathID, callback)
+A certification path: `certificateID`, an array of certificate IDs from the certificate to its CA, and `alias`.
+
+#### getAllCertPathValidationPolicies(callback)
+An array of the certification path validation policies: `certPathValidationPolicyID`, `alias`, `parameters` and
+`trustAnchor`, an array of `{certificateID}`, the CAs the policy trusts.
+
 ## Changelog
 - 0.8.0 Only Digest Auth support
 - 0.7.1 Improved events handling

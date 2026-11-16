@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tas="http://www.onvif.org/ver10/advancedsecurity/wsdl">
+    <SOAP-ENV:Body>
+        <tas:GetAllCertPathValidationPoliciesResponse>
+            <tas:CertPathValidationPolicy>
+                <tas:CertPathValidationPolicyID>3</tas:CertPathValidationPolicyID>
+                <tas:Alias>mqtt-broker</tas:Alias>
+                <tas:Parameters>
+                    <tas:RequireTLSWWWClientAuthExtendedKeyUsage>false</tas:RequireTLSWWWClientAuthExtendedKeyUsage>
+                    <tas:UseDeltaCRLs>false</tas:UseDeltaCRLs>
+                </tas:Parameters>
+                <tas:TrustAnchor>
+                    <tas:CertificateID>CA-1</tas:CertificateID>
+                </tas:TrustAnchor>
+            </tas:CertPathValidationPolicy>
+        </tas:GetAllCertPathValidationPoliciesResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
