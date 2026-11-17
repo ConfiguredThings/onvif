@@ -278,27 +278,6 @@ describe('Device', () => {
 	});
 
 	describe('setUsers', () => {
-		it('should set users', (done) => {
-			cam.setUsers([
-				{
-					username: 'username1',
-					password: 'password1',
-					userLevel: 'User',
-				},
-				{
-					username: 'username2',
-					password: 'password2',
-					userLevel: 'User',
-				},
-			], (err, data) => {
-				assert.strictEqual(err, null);
-				assert.ok(Array.isArray(data));
-				done();
-			});
-		});
-	});
-
-	describe('setUser', () => {
 		// Capture the request body sent to the device
 		const capture = (fn) => {
 			const request = cam._request;
@@ -313,8 +292,19 @@ describe('Device', () => {
 			}));
 		};
 
+		it('should set several users', async () => {
+			const { err, data, body } = await capture((cb) => cam.setUsers([
+				{ username: 'username1', password: 'password1', userLevel: 'User' },
+				{ username: 'username2', userLevel: 'Operator' },
+			], cb));
+			assert.strictEqual(err, null);
+			assert.strictEqual(data, null);
+			assert.strictEqual(body.split('<User>').length - 1, 2);
+			assert.ok(body.includes('>password1</Password>'));
+		});
+
 		it('should set the level without a password', async () => {
-			const { err, data, body } = await capture((cb) => cam.setUser([
+			const { err, data, body } = await capture((cb) => cam.setUsers([
 				{ username: 'username1', userLevel: 'Operator' },
 			], cb));
 			assert.strictEqual(err, null);
@@ -326,7 +316,7 @@ describe('Device', () => {
 		});
 
 		it('should send and escape a password if given', async () => {
-			const { err, body } = await capture((cb) => cam.setUser([
+			const { err, body } = await capture((cb) => cam.setUsers([
 				{ username: 'a&b', password: 'p<w>"\'&', userLevel: 'User' },
 			], cb));
 			assert.strictEqual(err, null);
@@ -338,7 +328,7 @@ describe('Device', () => {
 			const getUsers = cam.getUsers;
 			let called = false;
 			cam.getUsers = () => { called = true; };
-			const { err } = await capture((cb) => cam.setUser([
+			const { err } = await capture((cb) => cam.setUsers([
 				{ username: cam.username, userLevel: 'Operator' },
 			], cb));
 			cam.getUsers = getUsers;
@@ -348,13 +338,13 @@ describe('Device', () => {
 
 		it('should keep the current password if none is given', async () => {
 			const password = cam.password;
-			await capture((cb) => cam.setUser([{ username: cam.username, userLevel: 'Operator' }], cb));
+			await capture((cb) => cam.setUsers([{ username: cam.username, userLevel: 'Operator' }], cb));
 			assert.strictEqual(cam.password, password);
 		});
 
 		it('should use a new password for the current user', async () => {
 			const password = cam.password;
-			await capture((cb) => cam.setUser([
+			await capture((cb) => cam.setUsers([
 				{ username: cam.username, password: 'newpass', userLevel: 'Administrator' },
 			], cb));
 			assert.strictEqual(cam.password, 'newpass');
@@ -362,7 +352,7 @@ describe('Device', () => {
 		});
 
 		it('should reject a user with no username or level', (done) => {
-			cam.setUser([{ username: 'username1' }], (err, data) => {
+			cam.setUsers([{ username: 'username1' }], (err, data) => {
 				assert.ok(err instanceof Error);
 				assert.strictEqual(data, null);
 				done();
