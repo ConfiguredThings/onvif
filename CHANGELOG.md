@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `setUser()` sends a single SetUser request to change one or more users' level, with the
+  password optional, so a level can be changed without sending the password. Unlike
+  `setUsers()` it doesn't read the user list afterwards: only an Administrator can call
+  GetUsers, so that fails once the current user has lowered its own level. The ONVIF schema
+  makes the password optional but doesn't say what a device does without one, so check each
+  device model keeps the password. Usernames, passwords and levels are XML-escaped
+
 ## [0.8.0-19] - 2026-11-16
 
 ### Added
