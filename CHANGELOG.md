@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- `setUsers()` matches the ONVIF schema: each user needs a `username` and `userLevel`, and the
+  `password` is optional and left out of the request if it isn't given, so a level can be
+  changed without sending the password. The schema doesn't say what a device does without
+  one, so check each device model keeps the password. SetUser doesn't create users: a device
+  returns a fault (`ter:UsernameMissing`) for one that doesn't exist
+- `setUsers()` no longer reads the user list afterwards, and returns no data: call
+  `getUsers()` if you need it. Only an Administrator can call GetUsers, so it failed once the
+  current user had lowered its own level, and `setUsers()` returned an error although the
+  change was made. It no longer waits 2 seconds after changing the current user
+
+### Fixed
+- `setUsers()` XML-escapes usernames, passwords and levels, so a password containing `&` or
+  `<` is sent correctly
+
 ## [0.8.0-19] - 2026-11-16
 
 ### Added

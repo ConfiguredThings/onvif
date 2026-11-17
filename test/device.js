@@ -278,21 +278,83 @@ describe('Device', () => {
 	});
 
 	describe('setUsers', () => {
-		it('should set users', (done) => {
-			cam.setUsers([
-				{
-					username: 'username1',
-					password: 'password1',
-					userLevel: 'User',
-				},
-				{
-					username: 'username2',
-					password: 'password2',
-					userLevel: 'User',
-				},
-			], (err, data) => {
-				assert.strictEqual(err, null);
-				assert.ok(Array.isArray(data));
+		// Capture the request body sent to the device
+		const capture = (fn) => {
+			const request = cam._request;
+			let body = null;
+			cam._request = function(options, callback) {
+				body = options.body;
+				return request.call(this, options, callback);
+			};
+			return new Promise((resolve) => fn((err, data) => {
+				cam._request = request;
+				resolve({ err, data, body });
+			}));
+		};
+
+		it('should set several users', async () => {
+			const { err, data, body } = await capture((cb) => cam.setUsers([
+				{ username: 'username1', password: 'password1', userLevel: 'User' },
+				{ username: 'username2', userLevel: 'Operator' },
+			], cb));
+			assert.strictEqual(err, null);
+			assert.strictEqual(data, null);
+			assert.strictEqual(body.split('<User>').length - 1, 2);
+			assert.ok(body.includes('>password1</Password>'));
+		});
+
+		it('should set the level without a password', async () => {
+			const { err, data, body } = await capture((cb) => cam.setUsers([
+				{ username: 'username1', userLevel: 'Operator' },
+			], cb));
+			assert.strictEqual(err, null);
+			assert.strictEqual(data, null);
+			assert.ok(body.includes('<SetUser '));
+			assert.ok(body.includes('>username1</Username>'));
+			assert.ok(body.includes('>Operator</UserLevel>'));
+			assert.ok(!body.includes('<Password xmlns="http://www.onvif.org/ver10/schema"'));
+		});
+
+		it('should send and escape a password if given', async () => {
+			const { err, body } = await capture((cb) => cam.setUsers([
+				{ username: 'a&b', password: 'p<w>"\'&', userLevel: 'User' },
+			], cb));
+			assert.strictEqual(err, null);
+			assert.ok(body.includes('>a&amp;b</Username>'));
+			assert.ok(body.includes('>p&lt;w&gt;&quot;&apos;&amp;</Password>'));
+		});
+
+		it('should not read the users afterwards', async () => {
+			const getUsers = cam.getUsers;
+			let called = false;
+			cam.getUsers = () => { called = true; };
+			const { err } = await capture((cb) => cam.setUsers([
+				{ username: cam.username, userLevel: 'Operator' },
+			], cb));
+			cam.getUsers = getUsers;
+			assert.strictEqual(err, null);
+			assert.strictEqual(called, false);
+		});
+
+		it('should keep the current password if none is given', async () => {
+			const password = cam.password;
+			await capture((cb) => cam.setUsers([{ username: cam.username, userLevel: 'Operator' }], cb));
+			assert.strictEqual(cam.password, password);
+		});
+
+		it('should use a new password for the current user', async () => {
+			const password = cam.password;
+			await capture((cb) => cam.setUsers([
+				{ username: cam.username, password: 'newpass', userLevel: 'Administrator' },
+			], cb));
+			assert.strictEqual(cam.password, 'newpass');
+			cam.password = password;
+		});
+
+		it('should reject a user with no username or level', (done) => {
+			cam.setUsers([{ username: 'username1' }], (err, data) => {
+				assert.ok(err instanceof Error);
+				assert.strictEqual(data, null);
 				done();
 			});
 		});
