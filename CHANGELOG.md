@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-20] - 2026-11-17
+
 ### Changed
 - `setUsers()` matches the ONVIF schema: each user needs a `username` and `userLevel`, and the
   `password` is optional and left out of the request if it isn't given, so a level can be
