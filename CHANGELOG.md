@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-21] - 2026-11-18
+
 ### Added
 - `getEventBrokers()` returns the device's MQTT event brokers (or, with `url`, the one with
   that address) with the same names `addEventBroker()` takes, so one can be read, changed and
@@ -187,7 +189,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-19...HEAD
+[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-21...HEAD
+[0.8.0-21]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-20...v0.8.0-21
+[0.8.0-20]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-19...v0.8.0-20
 [0.8.0-19]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-18...v0.8.0-19
 [0.8.0-18]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-17...v0.8.0-18
 [0.8.0-17]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-16...v0.8.0-17
