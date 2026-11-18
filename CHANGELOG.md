@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `getEventBrokers()` returns the device's MQTT event brokers (or, with `url`, the one with
+  that address) with the same names `addEventBroker()` takes, so one can be read, changed and
+  added again, plus its connection `status`. The device never returns the password
+- `addEventBroker()` takes `certificateID` (the client certificate the device presents to the
+  broker) and `certPathValidationPolicyID` (the CAs it trusts for the broker's certificate),
+  both optional, for `mqtts` and `wss`
+
+### Changed
+- `AddEventBroker()` is renamed `addEventBroker()`, to match the other methods. The old name
+  has been removed
+
+### Fixed
+- `addEventBroker()` sends the QoS as `QoS`, as the schema has it, not `Qos`, and sends a QoS
+  of 0, which was left out
+- `addEventBroker()` sends `username` and `password` each if it is given: a password was sent
+  only with a user name, and a user name without a password was sent with `<Password>undefined`
+- `addEventBroker()` XML-escapes its values, so a password containing `&` or `<` is sent correctly
+- `addEventBroker()` wraps a `publishFilter` or `metadataFilter` that is a topic expression,
+  e.g. `tns1:RuleEngine//.`, in a `TopicExpression` with the ConcreteSet dialect, as the schema
+  needs. A filter starting with `<` is still sent as it is
+
 ## [0.8.0-20] - 2026-11-17
 
 ### Changed

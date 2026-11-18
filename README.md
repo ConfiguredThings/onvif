@@ -496,6 +496,34 @@ A certification path: `certificateID`, an array of certificate IDs from the cert
 An array of the certification path validation policies: `certPathValidationPolicyID`, `alias`, `parameters` and
 `trustAnchor`, an array of `{certificateID}`, the CAs the policy trusts.
 
+### MQTT event brokers
+
+*Events.* The device can publish its events to MQTT brokers. Which protocols it supports (`mqtt`, `mqtts`, `ws`, `wss`)
+and how many brokers it can have are in `getEventServiceCapabilities()`'s `EventBrokerProtocols` and `MaxEventBrokers`.
+
+A broker is an object with:
+- `url`: the broker's address, `scheme://host:port[/resource]` (the resource is only for websockets). It must be unique on the device
+- `topic`: the prefix for every topic the device publishes. It must not be empty
+- `username` and `password` (optional): each is sent only if it is given
+- `certificateID` (optional, for `mqtts` / `wss`): the client certificate the device presents to the broker, from `getAllCertificates()`
+- `certPathValidationPolicyID` (optional, for `mqtts` / `wss`): the policy, from `getAllCertPathValidationPolicies()`,
+  whose CAs the device trusts for the broker's certificate. Without one, the device doesn't check the broker's certificate
+- `publishFilter` and `metadataFilter` (optional): a concrete topic expression for the event or metadata topics to publish,
+  e.g. `'tns1:RuleEngine//.|tns1:VideoSource//.'`. A string starting with `<` is sent as the filter's XML instead
+- `qos` (optional): 0, 1 or 2
+- `status`: only returned by `getEventBrokers()`, e.g. `Offline`, `Connecting` or `Connected`
+
+#### addEventBroker(broker, callback)
+Adds a broker. All its values are XML-escaped.
+
+#### getEventBrokers([options], callback)
+An array of the device's brokers, or with `options.url` only the broker with that address. They have the same names
+`addEventBroker()` takes, so one can be read, changed and added again, but never the password, which the device doesn't return.
+```js
+const brokers = await cam.getEventBrokers();
+const connected = brokers.filter((b) => b.status === 'Connected');
+```
+
 ## Changelog
 - 0.8.0 Only Digest Auth support
 - 0.7.1 Improved events handling
