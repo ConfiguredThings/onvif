@@ -109,3 +109,127 @@ describe('Events', () => {
 		});
 	});
 });
+
+describe('Event brokers', () => {
+	let cam = null;
+	let bodies = [];
+	before((done) => {
+		const options = {
+			hostname: process.env.HOSTNAME || 'localhost',
+			username: process.env.USERNAME || 'admin',
+			password: process.env.PASSWORD || '9999',
+			port: process.env.PORT ? parseInt(process.env.PORT) : 10101,
+		};
+		cam = new onvif.Cam(options, (err) => {
+			// Record each request's body, then send it as usual
+			const request = cam._request;
+			cam._request = function(options, callback) {
+				bodies.push(options.body);
+				return request.call(this, options, callback);
+			};
+			done(err);
+		});
+	});
+	beforeEach(() => {
+		bodies = [];
+	});
+	const lastBody = () => bodies[bodies.length - 1].replace(/^.*<s:Body[^>]*>|<\/s:Body>.*$/g, '');
+
+	describe('getEventBrokers', () => {
+		it('should return every broker, without the password', (done) => {
+			cam.getEventBrokers((err, brokers) => {
+				assert.strictEqual(err, null);
+				assert.deepStrictEqual(brokers, [
+					{
+						url: 'mqtts://broker.example.com:8883',
+						topic: 'cameras/cam1',
+						username: 'cam1',
+						certificateID: '12',
+						certPathValidationPolicyID: '3',
+						publishFilter: 'tns1:RuleEngine//.',
+						qos: 0,
+						status: 'Connected',
+					},
+					{
+						url: 'mqtt://10.0.0.5:1883',
+						topic: '1234',
+						status: 'Offline',
+					},
+				]);
+				assert.strictEqual(lastBody(), '<GetEventBrokers xmlns="http://www.onvif.org/ver10/events/wsdl"></GetEventBrokers>');
+				done();
+			});
+		});
+		it('should ask for the broker with an address', (done) => {
+			cam.getEventBrokers({url: 'mqtt://a&b:1883'}, (err) => {
+				assert.strictEqual(err, null);
+				assert.strictEqual(lastBody(), '<GetEventBrokers xmlns="http://www.onvif.org/ver10/events/wsdl">' +
+					'<Address>mqtt://a&amp;b:1883</Address></GetEventBrokers>');
+				done();
+			});
+		});
+		it('should work as a promise', async() => {
+			const { Cam: CamPromise } = require('../promises/cam');
+			const pcam = new CamPromise({
+				hostname: process.env.HOSTNAME || 'localhost',
+				username: 'admin',
+				password: '9999',
+				port: process.env.PORT ? parseInt(process.env.PORT) : 10101,
+			});
+			await pcam.connect();
+			const brokers = await pcam.getEventBrokers();
+			assert.strictEqual(brokers.length, 2);
+		});
+	});
+
+	describe('addEventBroker', () => {
+		it('should send only the address and topic when that is all it is given', (done) => {
+			cam.addEventBroker({url: 'mqtt://10.0.0.5:1883', topic: 'cam1'}, (err) => {
+				assert.strictEqual(err, null);
+				assert.strictEqual(lastBody(), '<AddEventBroker xmlns="http://www.onvif.org/ver10/events/wsdl"><EventBroker>' +
+					'<Address>mqtt://10.0.0.5:1883</Address><TopicPrefix>cam1</TopicPrefix>' +
+					'</EventBroker></AddEventBroker>');
+				done();
+			});
+		});
+		it('should send every option, escaped and in the schema\'s order', (done) => {
+			cam.addEventBroker({
+				url: 'mqtts://broker.example.com:8883',
+				topic: 'cameras/cam1',
+				username: 'cam1',
+				password: 'p&ss<word>',
+				certificateID: 'client-1',
+				certPathValidationPolicyID: '3',
+				publishFilter: 'tns1:RuleEngine//.',
+				qos: 0,
+				metadataFilter: '<wsnt:TopicExpression xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2">x</wsnt:TopicExpression>',
+			}, (err) => {
+				assert.strictEqual(err, null);
+				const topicExpression = '<TopicExpression xmlns="http://docs.oasis-open.org/wsn/b-2" ' +
+					'xmlns:tns1="http://www.onvif.org/ver10/topics" ' +
+					'Dialect="http://www.onvif.org/ver10/tev/topicExpression/ConcreteSet">tns1:RuleEngine//.</TopicExpression>';
+				assert.strictEqual(lastBody(), '<AddEventBroker xmlns="http://www.onvif.org/ver10/events/wsdl"><EventBroker>' +
+					'<Address>mqtts://broker.example.com:8883</Address>' +
+					'<TopicPrefix>cameras/cam1</TopicPrefix>' +
+					'<UserName>cam1</UserName>' +
+					'<Password>p&amp;ss&lt;word&gt;</Password>' +
+					'<CertificateID>client-1</CertificateID>' +
+					'<PublishFilter>' + topicExpression + '</PublishFilter>' +
+					'<QoS>0</QoS>' +
+					'<CertPathValidationPolicyID>3</CertPathValidationPolicyID>' +
+					'<MetadataFilter><wsnt:TopicExpression xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2">x</wsnt:TopicExpression></MetadataFilter>' +
+					'</EventBroker></AddEventBroker>');
+				done();
+			});
+		});
+		it('should send mqtts without a client certificate or validation policy', (done) => {
+			cam.addEventBroker({url: 'mqtts://broker.example.com:8883', topic: 'cam1', username: 'u', password: 'p'}, (err) => {
+				assert.strictEqual(err, null);
+				assert.ok(!lastBody().includes('CertificateID'));
+				assert.ok(!lastBody().includes('CertPathValidationPolicyID'));
+				assert.ok(lastBody().includes('<UserName>u</UserName><Password>p</Password>'));
+				done();
+			});
+		});
+	});
+});
