@@ -454,8 +454,9 @@ configuration object
 
 ### Advanced Security
 
-*Advanced Security.* Read the device's keystore: its keys, its certificates (including any loaded manually, e.g. through the
-camera's web page) and its certification path validation policies. The IDs these return are what the event service's
+*Advanced Security.* Read and change the device's keystore: its keys, its certificates (including any loaded manually, e.g. through the
+camera's web page) and its certification path validation policies, and choose the certificates its TLS (HTTPS) server uses.
+For devices without this service, see [Device certificates](#device-certificates). The IDs these return are what the event service's
 `AddEventBroker` takes as `CertificateID` (the client certificate the device presents to an MQTT broker) and
 `CertPathValidationPolicyID` (which CAs it trusts for the broker's certificate).
 
@@ -495,6 +496,93 @@ A certification path: `certificateID`, an array of certificate IDs from the cert
 #### getAllCertPathValidationPolicies(callback)
 An array of the certification path validation policies: `certPathValidationPolicyID`, `alias`, `parameters` and
 `trustAnchor`, an array of `{certificateID}`, the CAs the policy trusts.
+
+#### getCertPathValidationPolicy(certPathValidationPolicyID, callback)
+One policy, as above.
+
+#### Changing the keystore
+
+Each of these checks its arguments and returns an error, without sending anything, if one it needs is missing.
+A certificate, key or PKCS#12 file can be given as PEM (one block), base64 DER or a Buffer.
+
+- `createRSAKeyPair({keyLength, alias})` / `createECCKeyPair({ellipticCurve, alias})`: the device generates a key pair
+  and returns `{keyID, estimatedCreationTime}`. The key is generated in the background, so wait for
+  `getKeyStatus(keyID)` to return `ok` before using it
+- `getKeyStatus(keyID)`: `ok`, `generating` or `corrupt`. `deleteKey(keyID)` deletes a key no certificate uses
+- `createPKCS10CSR({keyID, subject, signatureAlgorithm})`: a certificate signing request for a CA to sign, as base64 DER.
+  `subject` is `{country, stateOrProvinceName, locality, organization, organizationalUnit, commonName}`, each a string
+  or an array. `signatureAlgorithm` is `sha256WithRSAEncryption` (the default), `sha384WithRSAEncryption`,
+  `sha512WithRSAEncryption`, `ecdsa-with-SHA256`, `ecdsa-with-SHA384`, `ecdsa-with-SHA512` or an OID; an ECC key needs an `ecdsa` one
+- `createSelfSignedCertificate({keyID, subject, alias, notValidBefore, notValidAfter, signatureAlgorithm})`: returns the certificate's ID
+- `uploadCertificate({certificate, alias, keyAlias, privateKeyRequired})`: a CA's certificate, or one signed from a CSR.
+  Returns `{certificateID, keyID}`
+- `uploadCertificateWithPrivateKeyInPKCS12({pkcs12, passphrase, certificationPathAlias, keyAlias, ignoreAdditionalCertificates})`:
+  a certificate with its key (and its CA certificates) made elsewhere. Returns `{certificationPathID, keyID}`
+- `deleteCertificate(certificateID)`
+- `createCertificationPath({certificateIDs, alias})`: a chain, from the device's certificate to its root CA. Returns its ID.
+  `deleteCertificationPath(certificationPathID)`
+- `createCertPathValidationPolicy({trustAnchors, alias, requireTLSWWWClientAuthExtendedKeyUsage, useDeltaCRLs})`: which CA
+  certificates to trust. Returns its ID. `deleteCertPathValidationPolicy(certPathValidationPolicyID)`
+
+E.g. to have a camera check an MQTT broker's certificate:
+```js
+const { certificateID } = await cam.uploadCertificate({ certificate: fs.readFileSync('broker-ca.pem'), alias: 'mqtt-ca' });
+const policyID = await cam.createCertPathValidationPolicy({ trustAnchors: [certificateID], alias: 'mqtt-broker' });
+await cam.addEventBroker({ url: 'mqtts://broker.example.com:8883', topic: 'cam1', certPathValidationPolicyID: policyID });
+```
+
+And to give it a client certificate whose private key never leaves the camera:
+```js
+const { keyID } = await cam.createRSAKeyPair({ keyLength: 2048 });
+while (await cam.getKeyStatus(keyID) === 'generating') {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+}
+const csr = await cam.createPKCS10CSR({ keyID, subject: { commonName: 'cam1.example.com' } });
+// ... have the CA sign the CSR, then
+const { certificateID } = await cam.uploadCertificate({ certificate: signedPEM });
+await cam.createCertificationPath({ certificateIDs: [certificateID] });
+```
+
+#### The TLS server's certificates
+- `getAssignedServerCertificates()`: the IDs of the certification paths the device's TLS server uses
+- `addServerCertificateAssignment(certificationPathID)` / `removeServerCertificateAssignment(certificationPathID)`
+- `replaceServerCertificateAssignment({oldCertificationPathID, newCertificationPathID})`: in one step, e.g. to renew a
+  certificate, so the server always has one
+
+### Device certificates
+
+*Device.* The Device Management service's certificate operations, from before the Advanced Security service. They manage
+the certificates the device's HTTPS server uses, the CA certificates it trusts, and whether it asks clients for a
+certificate. Devices without the Advanced Security service (e.g. Axis) often have only these. A device with both may show
+the same keystore through each, but a certificate's ID here can be its alias there.
+
+Each certificate is `{certificateID, certificateContent, x509}`, as for `getAllCertificates()`. IDs are returned exactly
+as the device sends them, so keep any spaces. A certificate or key to load can be PEM (one block), base64 DER or a Buffer.
+Note the names: `getCertificates()` and `deleteCertificates()` are these, while `getCertificate()` and
+`deleteCertificate()` are Advanced Security's.
+
+- `getCertificates()`: the device's own certificates. `getCACertificates()`: the CA certificates it trusts
+- `getCertificatesStatus()`: `[{certificateID, status}]`; an enabled certificate of the device's own is the one its HTTPS server uses.
+  `setCertificatesStatus([{certificateID, status}])` changes them
+- `getClientCertificateMode()` / `setClientCertificateMode(enabled)`: whether the HTTPS server asks clients for a certificate,
+  checked against the CA certificates
+- `createCertificate({certificateID, subject, validNotBefore, validNotAfter})`: the device generates a key and a self-signed
+  certificate for it, and returns the certificate. Every option is optional, e.g. `subject: 'CN=cam1.example.com'`
+- `getPkcs10Request({certificateID, subject})`: a certificate signing request for that certificate's key, as base64 DER.
+  `loadCertificates([{certificateID, certificate}])` loads the signed certificate
+- `loadCACertificates([{certificateID, certificate}])`: CA certificates for the device to trust
+- `loadCertificateWithPrivateKey([{certificateID, certificate, privateKey}])`: a certificate and key made elsewhere. The ID is optional
+- `getCertificateInformation(certificateID)`: the device's description of a certificate: `subjectDN`, `issuerDN`, `keyLength`, `validity`, ...
+- `deleteCertificates([certificateID, ...])`
+
+E.g. to give a camera a CA-signed HTTPS certificate:
+```js
+await cam.createCertificate({ certificateID: 'https-1', subject: 'CN=cam1.example.com' });
+const csr = await cam.getPkcs10Request({ certificateID: 'https-1' });
+// ... have the CA sign the CSR, then
+await cam.loadCertificates([{ certificateID: 'https-1', certificate: signedPEM }]);
+await cam.setCertificatesStatus([{ certificateID: 'https-1', status: true }]);
+```
 
 ### MQTT event brokers
 

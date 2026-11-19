@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tds="http://www.onvif.org/ver10/device/wsdl" xmlns:tt="http://www.onvif.org/ver10/schema">
+    <SOAP-ENV:Body>
+        <tds:GetPkcs10RequestResponse>
+            <tds:Pkcs10Request>
+                <tt:Data>TUlJQ1Rlc3RDU1I=</tt:Data>
+            </tds:Pkcs10Request>
+        </tds:GetPkcs10RequestResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tds="http://www.onvif.org/ver10/device/wsdl" xmlns:tt="http://www.onvif.org/ver10/schema">
+    <SOAP-ENV:Body>
+        <tds:GetCertificatesResponse>
+            <tds:NvtCertificate>
+                <tt:CertificateID> Camera 01 </tt:CertificateID>
+                <tt:Certificate>
+                    <tt:Data>MIIDEzCCAfugAwIBAgIUH0aqGg87I+ySW6HvEH898kMXLfwwDQYJKoZIhvcNAQELBQAwFzEVMBMGA1UEAwwMVGVzdCBNUVRUIENBMB4XDTI2MTExNjExMDgyMVoXDTM2MTExMzExMDgyMVowFTETMBEGA1UEAwwKY2FtMS5sb2NhbDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKmfOIISsut7Nu0Imx1L54MUhfGsDKkKskhI98GF390afSlLB/yKMekRgWBaaUciHnzHadPuD3p6q9rb4D8JPh6oPuo8WE8hXgcjpV7o9yG/Z5JjZwNkwSQTCfviPZijexzduhtXXxxRn5YtcQwgJfhyMaE+ZtEuMLR5+SO1+WYHQKj07MIAwq41GIkj4NbVhqBQVvuLO0mTNPsBNIAChG3EQ9cJzveUDrn7CrssLzpd2a7jjYC7/u/UNlEGeYlBILTpANP7S6fZLiQ4y5khVpb3PzARyvBOvwYQQtMSYx+MugUun+SSvr/V+IVEGtFOErhXnZNpgSoH4JEgJyL7rpcCAwEAAaNZMFcwFQYDVR0RBA4wDIIKY2FtMS5sb2NhbDAdBgNVHQ4EFgQUzJp/KoGoWldaWgkqpQbpXPU/HIcwHwYDVR0jBBgwFoAUuJj0fD974VA4Zwe/UVZ20TE8QpMwDQYJKoZIhvcNAQELBQADggEBAB0icXPDA++b7/+hQIvLfT1eVVo+ynQQ6SZunB3/MiHrM4ypOrtBun/00PV0+Ak/THKm3xotWS9wUkY60+cREQFc54DxIMfNd0QAk+ALRv0vBYmGGY3/fiPlGrIkS9JVO4rSAMD4j3ly0QPGY/jMLuLwEx/0lWpoyu7O0eOc9Alllw9lattSTONaho4EHwrBRR2KNZG/wX0cSSr9Q9V6eyBla/Gk5MhwOPAY7lBWzxUL9l8QzXXSkj63CFiuTNp3d0gyRtlkDEGsAV62wUGLw5/0Awv/GcNses5rb7m3yJQh5/6j6WkYH0O6nksSFD50CqFWjJ+jd9LtlKNfiso+KEU=</tt:Data>
+                </tt:Certificate>
+            </tds:NvtCertificate>
+            <tds:NvtCertificate>
+                <tt:CertificateID>CACert313</tt:CertificateID>
+                <tt:Certificate>
+                    <tt:Data>MIIDDzCCAfegAwIBAgIUDNVDKsEHTFEWfgA7LVbIxd9hrTAwDQYJKoZIhvcNAQELBQAwFzEVMBMGA1UEAwwMVGVzdCBNUVRUIENBMB4XDTI2MTExNjExMDgyMVoXDTM2MTExMzExMDgyMVowFzEVMBMGA1UEAwwMVGVzdCBNUVRUIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwBlm1AlkwtgEA8tlaKwOmTLyN7kJKhb7U2iP9Gj5xCNfPrWQ8XP4h8XqICKn8dl21XC5s+EkSOpmC9PgfGMR87oFTmaACbN5+63rlKx3vHNuxg1A0wCGCTdEMHg2r5CPgTi26nolZMWuiEvCVybGmsqB2aZ2aj+im9gENpkdHlJE72NM3qHGpJdwcMzJZ10O5j2eWFgvbaEYaW1rdw3r4M6mGfK04pn1bngbC4xPHr+9ulV/fsM+eaq+6V2QCu+NVu/bHQ+iMTbimxnUFwz1P+WDKyIxpmvwua5kHiF3gFv7m/et9aopHvZF6voyyC/v+ldhqWY4BP6982GefNHQGQIDAQABo1MwUTAdBgNVHQ4EFgQUuJj0fD974VA4Zwe/UVZ20TE8QpMwHwYDVR0jBBgwFoAUuJj0fD974VA4Zwe/UVZ20TE8QpMwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAHF9aDT/aBc3Bm45rFyNlV/XRCGVWBSOVLW3XITWztqoPk+D8xKYLQ4rvB9/aZHvVWUnTyAVn1HTAAaKsGEBRLtR8ONA+F+4LhDK8Lev7OZ+qHCVGc8It2/GtPtHwdkBBYu2cIn3mcxBmT6RGkaNLyTmhQkG6fJnDHyagQAK9KIPBSKID+sVWM4ORqL/C4XlAy5wtmNRWYutG8GlkS4hlURZM1fDvgO4dnSoJgEV1ZN4WEyGBNVVNRZ5//BzDUvDAskzUHjyo0vZza6dpMFQfFNdHSzrG93WQfXRyuCFV8VNe7eTJwJi5Q1P6WKYxPTCj75jl2DZQqj2rMM7GPJ+PVg==</tt:Data>
+                </tt:Certificate>
+            </tds:NvtCertificate>
+        </tds:GetCertificatesResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
