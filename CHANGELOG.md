@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Advanced Security calls to change the keystore: `createRSAKeyPair()`, `createECCKeyPair()`, `getKeyStatus()`,
+  `deleteKey()`, `createPKCS10CSR()`, `createSelfSignedCertificate()`, `uploadCertificate()`,
+  `uploadCertificateWithPrivateKeyInPKCS12()`, `deleteCertificate()`, `createCertificationPath()`,
+  `deleteCertificationPath()`, `createCertPathValidationPolicy()`, `getCertPathValidationPolicy()` and
+  `deleteCertPathValidationPolicy()`, e.g. to upload an MQTT broker's CA and make the policy `addEventBroker()`'s
+  `certPathValidationPolicyID` needs, or to give the device a client certificate from a CSR
+- Advanced Security calls for the certificates the device's TLS (HTTPS) server uses: `getAssignedServerCertificates()`,
+  `addServerCertificateAssignment()`, `removeServerCertificateAssignment()` and `replaceServerCertificateAssignment()`
+- The Device Management service's certificate calls, for devices without Advanced Security (e.g. Axis):
+  `getCertificates()`, `getCACertificates()`, `getCertificatesStatus()`, `setCertificatesStatus()`,
+  `getClientCertificateMode()`, `setClientCertificateMode()`, `createCertificate()`, `getPkcs10Request()`,
+  `loadCertificates()`, `loadCACertificates()`, `loadCertificateWithPrivateKey()`, `getCertificateInformation()` and
+  `deleteCertificates()`
+- Certificates, keys and PKCS#12 files can be given as PEM, base64 DER or a Buffer. Each call that needs an argument
+  returns an error, without sending anything, if it is missing
+
 ## [0.8.0-22] - 2026-11-19
 
 ### Added
