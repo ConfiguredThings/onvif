@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `deleteEventBroker()` deletes the MQTT event broker with an address (`url`), so a broker can
+  be changed by deleting it and adding it again, as the address must be unique on the device.
+  A broker from `getEventBrokers()` can be passed as it is
+
 ## [0.8.0-21] - 2026-11-18
 
 ### Added

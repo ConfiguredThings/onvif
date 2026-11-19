@@ -524,6 +524,15 @@ const brokers = await cam.getEventBrokers();
 const connected = brokers.filter((b) => b.status === 'Connected');
 ```
 
+#### deleteEventBroker(options, callback)
+Deletes the broker with the address `options.url`, so a broker from `getEventBrokers()` can be passed as it is. As the
+address must be unique on the device, this is how a broker is changed: delete it, then add it again.
+```js
+const [old] = await cam.getEventBrokers({url: 'mqtts://broker.example.com:8883'});
+await cam.deleteEventBroker(old);
+await cam.addEventBroker({...old, topic: 'cameras/cam2', password: 'secret'});
+```
+
 ## Changelog
 - 0.8.0 Only Digest Auth support
 - 0.7.1 Improved events handling

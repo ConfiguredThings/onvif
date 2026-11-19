@@ -232,4 +232,33 @@ describe('Event brokers', () => {
 			});
 		});
 	});
+
+	describe('deleteEventBroker', () => {
+		it('should send the address, escaped', (done) => {
+			cam.deleteEventBroker({url: 'mqtt://a&b:1883'}, (err) => {
+				assert.strictEqual(err, null);
+				assert.strictEqual(lastBody(), '<DeleteEventBroker xmlns="http://www.onvif.org/ver10/events/wsdl">' +
+					'<Address>mqtt://a&amp;b:1883</Address></DeleteEventBroker>');
+				done();
+			});
+		});
+		it('should take a broker from getEventBrokers', (done) => {
+			cam.getEventBrokers((err, brokers) => {
+				assert.strictEqual(err, null);
+				cam.deleteEventBroker(brokers[1], (err) => {
+					assert.strictEqual(err, null);
+					assert.strictEqual(lastBody(), '<DeleteEventBroker xmlns="http://www.onvif.org/ver10/events/wsdl">' +
+						'<Address>mqtt://10.0.0.5:1883</Address></DeleteEventBroker>');
+					done();
+				});
+			});
+		});
+		it('should give an error, without sending anything, if there is no url', (done) => {
+			cam.deleteEventBroker({}, (err) => {
+				assert.ok(err instanceof Error);
+				assert.strictEqual(bodies.length, 0);
+				done();
+			});
+		});
+	});
 });
