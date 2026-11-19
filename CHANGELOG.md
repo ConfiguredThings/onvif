@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0-22] - 2026-11-19
+
 ### Added
 - `deleteEventBroker()` deletes the MQTT event broker with an address (`url`), so a broker can
   be changed by deleting it and adding it again, as the address must be unique on the device.
@@ -194,7 +196,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-21...HEAD
+[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-22...HEAD
+[0.8.0-22]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-21...v0.8.0-22
 [0.8.0-21]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-20...v0.8.0-21
 [0.8.0-20]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-19...v0.8.0-20
 [0.8.0-19]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-18...v0.8.0-19
