@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Advanced Security calls to change the keystore: `createRSAKeyPair()`, `createECCKeyPair()`, `getKeyStatus()`,
+  `deleteKey()`, `createPKCS10CSR()`, `createSelfSignedCertificate()`, `uploadCertificate()`,
+  `uploadCertificateWithPrivateKeyInPKCS12()`, `deleteCertificate()`, `createCertificationPath()`,
+  `deleteCertificationPath()`, `createCertPathValidationPolicy()`, `getCertPathValidationPolicy()` and
+  `deleteCertPathValidationPolicy()`, e.g. to upload an MQTT broker's CA and make the policy `addEventBroker()`'s
+  `certPathValidationPolicyID` needs, or to give the device a client certificate from a CSR
+- Advanced Security calls for the certificates the device's TLS (HTTPS) server uses: `getAssignedServerCertificates()`,
+  `addServerCertificateAssignment()`, `removeServerCertificateAssignment()` and `replaceServerCertificateAssignment()`
+- The Device Management service's certificate calls, for devices without Advanced Security (e.g. Axis):
+  `getCertificates()`, `getCACertificates()`, `getCertificatesStatus()`, `setCertificatesStatus()`,
+  `getClientCertificateMode()`, `setClientCertificateMode()`, `createCertificate()`, `getPkcs10Request()`,
+  `loadCertificates()`, `loadCACertificates()`, `loadCertificateWithPrivateKey()`, `getCertificateInformation()` and
+  `deleteCertificates()`
+- Certificates, keys and PKCS#12 files can be given as PEM, base64 DER or a Buffer. Each call that needs an argument
+  returns an error, without sending anything, if it is missing
+
 ### Fixed
 - `getServices()` records each service's address in `uri` whatever `media` is set to. With
   `media: 'ver10'` or `'ver20'` it recorded none, leaving only those from `getCapabilities()`,
@@ -14,6 +31,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   failed (e.g. HTTP 400 from an Axis camera). It also meant a camera with `media` set and
   `autoconnect` on didn't get its profiles and video sources on connecting, as that needs the
   Media address. Finding Media2 still only turns on `media2Support` when `media` isn't set
+
+## [0.8.0-22] - 2026-11-19
+
+### Added
+- `deleteEventBroker()` deletes the MQTT event broker with an address (`url`), so a broker can
+  be changed by deleting it and adding it again, as the address must be unique on the device.
+  A broker from `getEventBrokers()` can be passed as it is
 
 ## [0.8.0-21] - 2026-11-18
 
@@ -197,7 +221,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - getAudioEncoderConfigurationOptions() to take options rather that just a token
 
-[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-21...HEAD
+[Unreleased]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-22...HEAD
+[0.8.0-22]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-21...v0.8.0-22
 [0.8.0-21]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-20...v0.8.0-21
 [0.8.0-20]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-19...v0.8.0-20
 [0.8.0-19]: https://github.com/ConfiguredThings/onvif/compare/v0.8.0-18...v0.8.0-19

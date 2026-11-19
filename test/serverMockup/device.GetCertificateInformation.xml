@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tds="http://www.onvif.org/ver10/device/wsdl" xmlns:tt="http://www.onvif.org/ver10/schema">
+    <SOAP-ENV:Body>
+        <tds:GetCertificateInformationResponse>
+            <tds:CertificateInformation>
+                <tt:CertificateID>1</tt:CertificateID>
+                <tt:IssuerDN>CN=Test MQTT CA</tt:IssuerDN>
+                <tt:SubjectDN>CN=cam1.local</tt:SubjectDN>
+                <tt:KeyLength>2048</tt:KeyLength>
+                <tt:Version>3</tt:Version>
+                <tt:SerialNum>1f46aa1a</tt:SerialNum>
+                <tt:Validity>
+                    <tt:From>2026-11-16T11:08:21Z</tt:From>
+                    <tt:Until>2036-11-13T11:08:21Z</tt:Until>
+                </tt:Validity>
+            </tds:CertificateInformation>
+        </tds:GetCertificateInformationResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
