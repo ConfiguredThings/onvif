@@ -256,6 +256,33 @@ describe('Device', () => {
 		});
 	});
 
+	describe('device service requests before getCapabilities', () => {
+		it('go to the path the Cam was given', (done) => {
+			const http = require('http');
+			const camera = new onvif.Cam({
+				hostname: process.env.HOSTNAME || 'localhost',
+				username: process.env.USERNAME || 'admin',
+				password: process.env.PASSWORD || '9999',
+				port: process.env.PORT ? parseInt(process.env.PORT) : 10101,
+				path: '/onvif/device_service',
+				autoconnect: false,
+			});
+			const request = http.request;
+			const paths = [];
+			http.request = function(options, ...rest) {
+				paths.push(options.path);
+				return request.call(this, options, ...rest);
+			};
+			camera.getUsers((err) => {
+				http.request = request;
+				assert.deepStrictEqual(paths, ['/onvif/device_service']);
+				assert.strictEqual(camera.uri, undefined);
+				assert.strictEqual(err, null);
+				done();
+			});
+		});
+	});
+
 	describe('createUsers', () => {
 		it('should create users', (done) => {
 			cam.createUsers([
