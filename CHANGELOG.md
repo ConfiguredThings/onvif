@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   failed (e.g. HTTP 400 from an Axis camera). It also meant a camera with `media` set and
   `autoconnect` on didn't get its profiles and video sources on connecting, as that needs the
   Media address. Finding Media2 still only turns on `media2Support` when `media` isn't set
+- A request to the device service (e.g. `getUsers()`, `setUsers()`, `getNetworkInterfaces()`)
+  made before `getCapabilities()` or `getServices()`, e.g. with `autoconnect: false`, goes to
+  the Cam's `path`. It went to the path `device`, which devices reject, e.g. with an HTTP 400
+  HTML page
 
 ## [0.8.0-22] - 2026-11-19
 
