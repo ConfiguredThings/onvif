@@ -24,6 +24,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Certificates, keys and PKCS#12 files can be given as PEM, base64 DER or a Buffer. Each call that needs an argument
   returns an error, without sending anything, if it is missing
 
+### Fixed
+- `getServices()` records each service's address in `uri` whatever `media` is set to. With
+  `media: 'ver10'` or `'ver20'` it recorded none, leaving only those from `getCapabilities()`,
+  which has no Media2 service, so with `'ver20'` every Media2 call went to the path `media2` and
+  failed (e.g. HTTP 400 from an Axis camera). It also meant a camera with `media` set and
+  `autoconnect` on didn't get its profiles and video sources on connecting, as that needs the
+  Media address. Finding Media2 still only turns on `media2Support` when `media` isn't set
+
 ## [0.8.0-22] - 2026-11-19
 
 ### Added

@@ -353,6 +353,79 @@ describe('Common functions', () => {
 		});
 	});
 
+	describe('getServices service addresses', () => {
+		const { parseSOAPString } = require('../lib/utils');
+
+		// A GetServices response with Media and Media2, as a Profile T camera gives
+		const service = (namespace, path) =>
+			'<tds:Service><tds:Namespace>' + namespace + '</tds:Namespace>' +
+			'<tds:XAddr>http://192.168.1.10' + path + '</tds:XAddr>' +
+			'<tds:Version><tt:Major>2</tt:Major><tt:Minor>0</tt:Minor></tds:Version></tds:Service>';
+		const response =
+			'<?xml version="1.0" encoding="UTF-8"?>' +
+			'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" ' +
+			'xmlns:tds="http://www.onvif.org/ver10/device/wsdl" xmlns:tt="http://www.onvif.org/ver10/schema">' +
+			'<SOAP-ENV:Body><tds:GetServicesResponse>' +
+			service('http://www.onvif.org/ver10/device/wsdl', '/onvif/device_service') +
+			service('http://www.onvif.org/ver10/media/wsdl', '/onvif/media') +
+			service('http://www.onvif.org/ver20/media/wsdl', '/onvif/media2') +
+			service('http://www.onvif.org/ver10/events/wsdl', '/onvif/events') +
+			service('http://www.axis.com/vapix/ws/action1', '/onvif/axis') +
+			'</tds:GetServicesResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>';
+
+		// A camera that answers every request with the GetServices response
+		function camera(media) {
+			const c = new onvif.Cam({ hostname: 'localhost', autoconnect: false, media });
+			c._request = (options, callback) => parseSOAPString(response, callback.bind(c), 200);
+			return c;
+		}
+
+		[null, 'ver10', 'ver20'].forEach((media) => {
+			it(`should record each ONVIF service's address with media ${media}`, (done) => {
+				const c = camera(media);
+				c.getServices(true, (err) => {
+					assert.strictEqual(err, null);
+					assert.strictEqual(c.uri.device.path, '/onvif/device_service');
+					assert.strictEqual(c.uri.media.path, '/onvif/media');
+					assert.strictEqual(c.uri.media2.path, '/onvif/media2');
+					assert.strictEqual(c.uri.events.path, '/onvif/events');
+					assert.strictEqual(c.uri.action1, undefined);
+					done();
+				});
+			});
+		});
+
+		it('should use Media2 when it finds it, with no media version given', (done) => {
+			const c = camera(null);
+			c.getServices(true, () => {
+				assert.strictEqual(c.media2Support, true);
+				done();
+			});
+		});
+
+		it('should not use Media2 with media ver10, though it finds it', (done) => {
+			const c = camera('ver10');
+			c.getServices(true, () => {
+				assert.strictEqual(c.media2Support, false);
+				done();
+			});
+		});
+
+		it('should use Media2 at its address with media ver20', (done) => {
+			const c = camera('ver20');
+			c.getServices(true, () => {
+				assert.strictEqual(c.media2Support, true);
+				let path = null;
+				c._request = (options) => {
+					path = c.uri[options.service].path;
+				};
+				c.getOSDs('0', () => {});
+				assert.strictEqual(path, '/onvif/media2');
+				done();
+			});
+		});
+	});
+
 	describe('getDeviceInformation', () => {
 		it('should return an information about device', (done) => {
 			cam.getDeviceInformation((err, data) => {
